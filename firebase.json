@@ -4,7 +4,7 @@
       "target": "ang-blog-dashboard",
       "source": ".",
       "frameworksBackend": {
-        "region": "us-central1"
+        "region": "us-west1"
       }
     }
   ]
