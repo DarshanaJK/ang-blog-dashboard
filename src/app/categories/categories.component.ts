@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {AngularFireStorageModule} from "@angular/fire/compat/storage";
-import {AngularFireModule} from "@angular/fire/compat";
+// import {AngularFireModule} from "@angular/fire/compat";
 import {environment} from "../../environment/environment";
 import {BrowserModule} from "@angular/platform-browser";
 import {NgForm} from "@angular/forms";
@@ -11,7 +11,7 @@ import {NgForm} from "@angular/forms";
 @Component({
   imports: [
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    // AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
     BrowserModule
   ],
@@ -21,23 +21,34 @@ import {NgForm} from "@angular/forms";
   templateUrl: './categories.component.html'
 })
 
-export class CategoriesComponent implements OnInit{
+export class CategoriesComponent implements OnInit {
 
   constructor( private afs: AngularFirestore ) { }
 
   ngOnInit() {
   }
 
-  onSubmit (formData: any) {                            //check again
+  onSubmit(formData: any) {
     let categoryData = {
-      category: formData.value.category
+      category: formData.value.category,
+    };
+
+    let subCategoryData = {
+      subCategory:  "sucCategory1" ,
+
+    };
+
+      this.afs.collection("categories").add(categoryData).then(docRef =>  {
+        console.log(docRef);
+
+
+        this.afs.collection("categories").doc(docRef.id).collection("subcategories").add(subCategoryData).then(docRef1 => {
+          console.log(docRef1);
+        })
+      })
+        .catch(err => { console.log(err);
+        });
+
     }
 
-    this.afs.collection("categories").add(categoryData).then(docRef =>  {
-      console.log(docRef);
-    })
-      .catch(err => { console.log(err) })
-
-  }
 }
-
